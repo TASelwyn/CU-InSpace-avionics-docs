@@ -1,0 +1,24 @@
+\documentclass[12pt, table,dvipsnames]{article}
+\include{packages}
+\graphicspath{ {./images/} }
+%\makeglossaries
+
+\begin{document}
+\title{\doctitle}
+\input{title}
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents\thispagestyle{fancy}
+\newpage
+
+\doublespacing
+\include{tex/sections/1_0_introduction.tex}
+\include{tex/sections/2_2_ground_station_ui.tex}
+\newpage
+
+\newpage
+\printbibliography[
+heading=bibintoc,
+title={References}
+]
+\end{document}

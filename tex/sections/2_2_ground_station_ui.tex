@@ -1,0 +1,7 @@
+%{\fontsize{14}{14}\selectfont \bf 4.1 Machine learning models}\\
+\subsectionfont{\fontsize{14}{14}\selectfont}
+\subsection{User Interface}
+
+ The dashboard visualizes data on different charts using Apache ECharts. Temperature, pressure, velocity and altitude are displayed among other indicators. Flight time is tracked using the mission timer component.
+
+The UI fundamentally makes use of a websocket connection to the Python backend, which sends telemetry data in real-time as it receives it from the rocket transmission chip. This data is sent in JSON format, where it is unpacked and displayed in chart components.
