@@ -1,3 +1,27 @@
 \subsectionfont{\fontsize{14}{14}\selectfont}
 \subsection{UI-Backend Interaction}
-Lorem ipsum doler sit amet.
+
+The user interface interacts with the backend system via a websocket.
+Because of the real-time nature of the data being displayed, a websocket
+prevents constant API polling and reduces latency between when the telemetry data is parsed
+and when it is displayed on the user interface.
+
+\subsubsection{Connection Handling}
+The UI will maintain connection with the backend system even with interruptions.
+
+While disconnected, the UI continues to poll the backend system every second
+until a connection is established. If at any point this connection is severed,
+the UI will beging polling for a connection again.
+
+The websocket connection allows multiple clients to be connected at once. This means
+that the rocketry team could choose to have multiple instance of the user interface
+running at once on different devices. This would allow a fully monitored ground station
+control team.
+
+\subsubsection{Receiving Data}
+
+\subsubsection{Static Display}
+
+\subsubsection{Websocket Commands}
+
+\subsubsection{Mission Replays}
