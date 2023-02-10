@@ -1,10 +1,9 @@
 \subsectionfont{\fontsize{14}{14}\selectfont}
-\subsection{UI-Backend Interaction}
+\subsection{UI Internal Architecture}
 
-The user interface interacts with the backend system via a websocket.
-Because of the real-time nature of the data being displayed, a websocket
-prevents constant API polling and reduces latency between when the telemetry data is parsed
-and when it is displayed on the user interface.
+The UI receives data via a websocket in order to preserve the real-time nature of the data being transmitted. When the data
+is received, it is distributed amongst all the dashboard charts and the map for a live visual of the rocket's status. The UI 
+stores data locally in the browser for historical data display.
 
 \subsubsection{Connection Handling}
 The UI will maintain connection with the backend system even with interruptions.
@@ -13,15 +12,67 @@ While disconnected, the UI continues to poll the backend system every second
 until a connection is established. If at any point this connection is severed,
 the UI will beging polling for a connection again.
 
+When the UI reconnects to the backend, it issues an \emph{update} command, which prompts the backend to send the most recently
+received data packet. This ensures that the UI displays the latest data with minimal delay.
+
 The websocket connection allows multiple clients to be connected at once. This means
 that the rocketry team could choose to have multiple instance of the user interface
-running at once on different devices. This would allow a fully monitored ground station
-control team.
+running at once on different devices. This would allow a full ground station control team
+to monitor the rocket flight, similar to corporations in industry.
 
 \subsubsection{Receiving Data}
 
+Data is received in JSON format by the frontend via a websocket. The data may not contain all different packet types
+at one time (i.e. not every websocket message will contain altitude information).
+
+When data is received by the frontend, it is unpacked and written to the browser cache (local storage). The browser cache
+contains several different buffer arrays, one for each type of data packet (altitude data, satellite data, etc.). Each buffer
+contains $n$ of the most recent packets corresponding to its data type (altitude, satellite, etc), where $n$ is the number of
+historical data points that should be displayed on the dashboard charts. The current software stores 20.
+
+Because not all types of data are sent on each websocket transmission, separate buffers allow the data to be stored for each
+category out of sync with the other categories. Altitude data is transmitted most frequently, so its buffer will fill up and
+refresh faster than the buffer for satellite data.
+
+When data is received and written to the local storage, a browser event is issued. This browser event causes all charts on the
+dashboard and the map to update their display with the most recently received data.
+
 \subsubsection{Static Display}
+
+The buffers containing each packet type are used to maintain a static display when the connection between the UI and backend
+system (or the connection between the rocket transmitter and the ground station board) is interrupted. The UI will maintain
+a display of its reserve data until connection can be re-established.
 
 \subsubsection{Websocket Commands}
 
+There are several commands available to the ground station operator in order to communicate with the backend system.
+
+\begin{itemize}
+    \item \textbf{Update:} The update command retrieves the latest packet from the backend.
+\end{itemize}
+
 \subsubsection{Mission Replays}
+
+To allow for analysis of previous rocket flights, system testing and ground station operator training, the UI implements 
+mission replay functionality.
+
+Mission replays allow the ground station operator to select a recorded mission (stored telemetry data from a previous rocket
+flight) and play it back through the graphical interface. The replay has several controls, not unlike video playback:
+
+\begin{itemize}
+    \item \textbf{Play:} Continues a currently paused mission.
+    \item \textbf{Pause:} Pauses the current replay.
+    \item \textbf{Stop:} Stops the current mission replay and resets all cached historical data.
+    \item \textbf{Fast forward:} Doubles the current replay speed, to a maximum of 4x.
+    \item \textbf{Rewind:} Halves the current replay speed, to a minimum of 0.25x (does not play replay in reverse).
+\end{itemize}
+
+The replay controls are accompanied by a replay speed indicator. Each of the controls above matches to a specific websocket command.
+
+\begin{itemize}
+    \item \textbf{Play:} \verb|telemetry replay play|
+    \item \textbf{Pause:} \verb|telemetry replay pause|
+    \item \textbf{Stop:} \verb|telemetry replay stop|
+    \item \textbf{Fast forward:} \verb|telemetry replay speed 2x|, where \verb|x| is the current speed
+    \item \textbf{Rewind:} \verb|telemetry replay speed 0.5x|, where \verb|x| is the current speed
+\end{itemize}
