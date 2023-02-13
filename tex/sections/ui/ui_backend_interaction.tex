@@ -67,7 +67,16 @@ flight) and play it back through the graphical interface. The replay has several
     \item \textbf{Rewind:} Halves the current replay speed, to a minimum of 0.25x (does not play replay in reverse).
 \end{itemize}
 
-The replay controls are accompanied by a replay speed indicator. Each of the controls above matches to a specific websocket command.
+The replay controls are accompanied by a replay speed indicator.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=12cm]{images/replayControls.png}
+\caption{The visual representation of the replay controls.}
+\label{fig:Replay Controls}
+\end{figure}
+
+Each of the controls above matches to a specific websocket command.
 
 \begin{itemize}
     \item \textbf{Play:} \verb|telemetry replay play|
