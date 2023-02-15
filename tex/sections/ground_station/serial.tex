@@ -4,7 +4,10 @@
 \subsection{Serial}
 
 \subsubsection{Serial Connection}
-Connecting to ground station board\\
+The serial manager queries all connected devices and adds the list to the websocket output. Once the operator picks a device, the user interface sends a command to the ground station to connect. Upon receipt of the command, the serial process initiates a connection to the serial port.
+
+\subsubsection{RN2483 LoRa Setup}
+Initializes the lora radio on the ground station board, ...
 
 \subsubsection{Packet Reception}
 PACKET DELIVERY\\
