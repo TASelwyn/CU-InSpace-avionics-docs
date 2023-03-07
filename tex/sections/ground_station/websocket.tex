@@ -2,11 +2,11 @@
 
 \subsection{WebSocket}
 
-The WebSocket is created using the Tornado Web library in Python on localhost:33845/websocket. 
+The WebSocket is created using the Tornado Web library in Python on localhost:33845/websocket.\\
 The socket can be connected to using the standard http to websocket upgrade scheme.
 
 \subsubsection{Authentication}
-Currently, any locally connected client is automatically authenticated with full permissions.
+There is no implemented authentication, therefore all connections have full permissions.\\
 
 \subsubsection{Output}
-The output comes from the telemetry process in our unique websocket output json format \cite{websocket_format}. This is passed to all connected websocket clients with absolutely no conversion.
+The output comes from the telemetry process in our websocket output format \cite{websocket_format}. This is passed to all connected websocket clients with absolutely no conversion.

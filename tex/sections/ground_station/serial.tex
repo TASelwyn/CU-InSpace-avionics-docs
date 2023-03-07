@@ -4,10 +4,12 @@
 \subsection{Serial}
 
 \subsubsection{Serial Connection}
-The serial manager queries all connected devices and adds the list to the websocket output. Once the operator picks a device, the user interface sends a command to the ground station to connect. Upon receipt of the command, the serial process initiates a connection to the serial port.
+The serial manager queries all serial ports and informs connected clients about plugged in boards. 
+Once the operator picks a device, the user interface sends a command to the ground station to connect. Upon receiption of the command, the serial process initiates a connection to the serial port.
 
 \subsubsection{RN2483 LoRa Setup}
-Initializes the lora radio on the ground station board, ...
+The ground station board has an RN2483 LoRa radio on board, which needs to be initialized. In order to do this, the telemetry server sends a batch of commands to configure the radio to match the rocket settings. After it's initialized, the ground station is ready to receive payloads from the rocket.
 
 \subsubsection{Packet Reception}
+
 PACKET DELIVERY\\
